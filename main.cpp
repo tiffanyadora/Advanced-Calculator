@@ -35,8 +35,33 @@ class mathObject{
 		}
 };
 
-int solveRecursion(){
+double solveRecursion(mathObject* arr, int leftIndex, int rightIndex){
+	int minPriIndex = 0;
+	int minPri = 99999;
+	for(int z = leftIndex; z <= rightIndex; z++){
+		int curPri = arr[z].getPri();
+		if(curPri < minPri){
+			minPri = curPri;
+			minPriIndex = z;
+		}
+		
+		if(arr[z].getType() == "bracket_open"){
+			z = arr[z].getNum();
+		}
+		
+	}
 	
+	
+	string minPriType = arr[minPriIndex].getType();
+	if(minPriType == "number"){
+		return arr[minPriIndex].getNum();
+	}else if(minPriType == "addition"){
+		return (solveRecursion(arr, leftIndex, minPriIndex-1) + solveRecursion(arr, minPriIndex+1, rightIndex));
+	}else if(minPriType == "multiplication"){
+		return (solveRecursion(arr, leftIndex, minPriIndex-1) * solveRecursion(arr, minPriIndex+1, rightIndex));
+	}else if(minPriType == "bracket_open"){
+		return solveRecursion(arr, leftIndex+1, rightIndex-1);
+	}
 }
 
 int main(){
@@ -53,6 +78,7 @@ int main(){
     for(int i = 0; i < input.length(); i++){
 		if(input[i] == ' '){
 			input.erase(i,1);
+			i--;
 		}
 		input[i] = tolower(input[i]);
 	}
@@ -79,7 +105,7 @@ int main(){
     while(i < input.length()){
     	char cur = input[i];
     	if(cur == '('){
-    		arr[t] = mathObject("bracket_open", 99);
+    		arr[t] = mathObject("bracket_open", 98);
     		bracketDepth++;
     		bracketTeleportHandler[bracketDepth] = t;
     		t++; i++;
@@ -132,7 +158,7 @@ int main(){
 				if((i+1) < input.length() && (('0' <= nextInput && nextInput <= '9') || nextInput == '.')){
 					i++;
 				}else{
-					arr[t] = mathObject("number", -1, frontTemp+(backTemp/pow(10,behindComa-1)) );
+					arr[t] = mathObject("number", 99, frontTemp+(backTemp/pow(10,behindComa-1)) );
 					t++; i++;
 					break;
 				}
@@ -158,14 +184,22 @@ int main(){
 				}
 			}
 		}else{
-			cout << "ERROR: UNRECOGNIZED INPUT" << endl;
+			cout << "<!!!> ERROR: UNRECOGNIZED INPUT" << endl;
 			break;
 		}
 	}
     
-    cout << endl;
+	if(bracketDepth != 0){
+		cout << "<!!!> ERROR: UNEVEN BRACKET" << endl;
+		return 0;
+	}
+			
+    cout << endl << "MATH OBJECT ARRAY: " << endl;
     for(int a = 0; a < t; a++){
     	cout << arr[a].getType() << " " << setprecision(11) << arr[a].getNum() << endl;
 	}
+	
+	cout << endl;
+	cout << "RESULT: " << solveRecursion(arr, 0, t-1) << endl;
     return 0;
 }
