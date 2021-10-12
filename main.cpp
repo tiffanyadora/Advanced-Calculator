@@ -167,6 +167,5 @@ int main(){
     for(int a = 0; a < t; a++){
     	cout << arr[a].getType() << " " << setprecision(11) << arr[a].getNum() << endl;
 	}
-	
     return 0;
 }
