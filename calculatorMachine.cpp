@@ -36,6 +36,8 @@ class mathObject{
 };
 
 double solveRecursion(mathObject* arr, int leftIndex, int rightIndex){
+	
+	//SELECT THE OPERATION BY LEAST PRIORITY
 	int minPriIndex = 0;
 	int minPri = 99999;
 	for(int z = leftIndex; z <= rightIndex; z++){
@@ -53,7 +55,7 @@ double solveRecursion(mathObject* arr, int leftIndex, int rightIndex){
 
 	//INSTANTIATE MATH OPERATOR OBJECT
 	Operations op;
-
+	//DETERMINE WHAT TO DO WITH THE SELECTED OPERATION
 	string minPriType = arr[minPriIndex].getType();
 	if(minPriType == "number"){
 		return arr[minPriIndex].getNum();
@@ -97,6 +99,11 @@ double solveRecursion(mathObject* arr, int leftIndex, int rightIndex){
 			return (solveRecursion(arr, leftIndex, minPriIndex-1) * op.ToRad(solveRecursion(arr, minPriIndex+1, rightIndex)));
 		else
 			return (op.ToRad(solveRecursion(arr, minPriIndex+1, rightIndex)));
+	}else if(minPriType == "sqrt"){
+		if(leftIndex != minPriIndex)
+			return (solveRecursion(arr, leftIndex, minPriIndex-1) * op.SquareRoot(solveRecursion(arr, minPriIndex+1, rightIndex)));
+		else
+			return (op.SquareRoot(solveRecursion(arr, minPriIndex+1, rightIndex)));
 	}else if(minPriType == "bracket_open"){
 		if(leftIndex != minPriIndex)
 			return (solveRecursion(arr, leftIndex, minPriIndex-1) * solveRecursion(arr, minPriIndex+1, rightIndex-1));
@@ -105,16 +112,7 @@ double solveRecursion(mathObject* arr, int leftIndex, int rightIndex){
 	}
 }
 
-int main(){
-
-    //cout<<"Tes" << endl;
-    //cout << "cobain bosq" << endl;
-
-    //GET USER INPUT
-    string input;
-    getline(cin, input);
-
-
+double calculatorMachine(string input){
     //CLEAN INPUT (remove spaces and toLowercase)
     for(int i = 0; i < input.length(); i++){
 		if(input[i] == ' '){
@@ -143,7 +141,7 @@ int main(){
 	int i = 0, //INDEX being worked on
 		t = 0; //target INDEX of mathObject arr
 
-	// > MAIN LOOP
+	// > MAIN LOOP PARSING THE INPUT
     while(i < input.length()){
     	char cur = input[i];
     	if(cur == '('){
@@ -215,13 +213,16 @@ int main(){
 				}else{
 					string str = input.substr(startIn, i-startIn+1);
 					if(str == "sin") arr[t] = mathObject("sin", 5);
-					if(str == "cos") arr[t] = mathObject("cos", 5);
-					if(str == "tan") arr[t] = mathObject("tan", 5);
-					if(str == "log") arr[t] = mathObject("log", 5);
-					if(str == "sqrt") arr[t] = mathObject("sqrt", 5);
-					if(str == "ln") arr[t] = mathObject("ln", 5);
-					if(str == "torad") arr[t] = mathObject("torad", 5);
-
+					else if(str == "cos") arr[t] = mathObject("cos", 5);
+					else if(str == "tan") arr[t] = mathObject("tan", 5);
+					else if(str == "log") arr[t] = mathObject("log", 5);
+					else if(str == "sqrt") arr[t] = mathObject("sqrt", 5);
+					else if(str == "ln") arr[t] = mathObject("ln", 5);
+					else if(str == "torad") arr[t] = mathObject("torad", 5);
+					else{
+						cout << "<!!!> ERROR: UNKNOWN FUNCTION" << endl;
+						throw;
+					}
 					t++; i++;
 					break;
 				}
@@ -234,7 +235,7 @@ int main(){
 
 	if(bracketDepth != 0){
 		cout << "<!!!> ERROR: UNEVEN BRACKET" << endl;
-		return 0;
+		throw;
 	}
 
 	/*
@@ -242,8 +243,8 @@ int main(){
     for(int a = 0; a < t; a++){
     	cout << arr[a].getType() << " " << setprecision(11) << arr[a].getNum() << endl;
 	}*/
-
-	cout << endl;
-	cout << "RESULT: " << solveRecursion(arr, 0, t-1) << endl;
-    return 0;
+	
+	//INVOKE THE SOLVE RECURSION ON THE PARSED INPUT!!!!!
+	double toReturn = solveRecursion(arr, 0, t-1);
+	return toReturn;
 }
