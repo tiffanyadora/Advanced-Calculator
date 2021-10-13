@@ -1,7 +1,7 @@
 class Operations
 {
 	public:
-		double ToRad(double Radians); //converts the degree input into radians
+		double ToRad(double Degrees); //converts the degree input into radians
 		double Sine(double Radians); //does sine operations
 		double Cosine(double Radians); //does cosine operations
 		double Tangent(double Radians); //does tangent operations
