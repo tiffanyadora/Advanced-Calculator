@@ -44,16 +44,16 @@ double solveRecursion(mathObject* arr, int leftIndex, int rightIndex){
 			minPri = curPri;
 			minPriIndex = z;
 		}
-		
+
 		if(arr[z].getType() == "bracket_open"){
 			z = arr[z].getNum();
 		}
-		
+
 	}
-	
+
 	//INSTANTIATE MATH OPERATOR OBJECT
 	Operations op;
-	
+
 	string minPriType = arr[minPriIndex].getType();
 	if(minPriType == "number"){
 		return arr[minPriIndex].getNum();
@@ -76,27 +76,27 @@ double solveRecursion(mathObject* arr, int leftIndex, int rightIndex){
 		if(leftIndex != minPriIndex)
 			return (solveRecursion(arr, leftIndex, minPriIndex-1) * op.Cosine(solveRecursion(arr, minPriIndex+1, rightIndex)));
 		else
-			return (op.Sine(solveRecursion(arr, minPriIndex+1, rightIndex)));
+			return (op.Cosine(solveRecursion(arr, minPriIndex+1, rightIndex)));
 	}else if(minPriType == "tan"){
 		if(leftIndex != minPriIndex)
 			return (solveRecursion(arr, leftIndex, minPriIndex-1) * op.Tangent(solveRecursion(arr, minPriIndex+1, rightIndex)));
 		else
-			return (op.Sine(solveRecursion(arr, minPriIndex+1, rightIndex)));
+			return (op.Tangent(solveRecursion(arr, minPriIndex+1, rightIndex)));
 	}else if(minPriType == "log"){
 		if(leftIndex != minPriIndex)
 			return (solveRecursion(arr, leftIndex, minPriIndex-1) * op.Logarithm(solveRecursion(arr, minPriIndex+1, rightIndex)));
 		else
-			return (op.Sine(solveRecursion(arr, minPriIndex+1, rightIndex)));
+			return (op.Logarithm(solveRecursion(arr, minPriIndex+1, rightIndex)));
 	}else if(minPriType == "ln"){
 		if(leftIndex != minPriIndex)
 			return (solveRecursion(arr, leftIndex, minPriIndex-1) * op.NaturalLog(solveRecursion(arr, minPriIndex+1, rightIndex)));
 		else
-			return (op.Sine(solveRecursion(arr, minPriIndex+1, rightIndex)));
+			return (op.NaturalLog(solveRecursion(arr, minPriIndex+1, rightIndex)));
 	}else if(minPriType == "torad"){
 		if(leftIndex != minPriIndex)
 			return (solveRecursion(arr, leftIndex, minPriIndex-1) * op.ToRad(solveRecursion(arr, minPriIndex+1, rightIndex)));
 		else
-			return (op.Sine(solveRecursion(arr, minPriIndex+1, rightIndex)));
+			return (op.ToRad(solveRecursion(arr, minPriIndex+1, rightIndex)));
 	}else if(minPriType == "bracket_open"){
 		if(leftIndex != minPriIndex)
 			return (solveRecursion(arr, leftIndex, minPriIndex-1) * solveRecursion(arr, minPriIndex+1, rightIndex-1));
@@ -106,15 +106,15 @@ double solveRecursion(mathObject* arr, int leftIndex, int rightIndex){
 }
 
 int main(){
-	
+
     //cout<<"Tes" << endl;
     //cout << "cobain bosq" << endl;
-    
+
     //GET USER INPUT
     string input;
     getline(cin, input);
-    
-    
+
+
     //CLEAN INPUT (remove spaces and toLowercase)
     for(int i = 0; i < input.length(); i++){
 		if(input[i] == ' '){
@@ -123,26 +123,26 @@ int main(){
 		}
 		input[i] = tolower(input[i]);
 	}
-	
+
 	/*
 	cout << "clean input: " << input << endl;*/
-	
+
 	//INITIALIZE mathObject ARRAY
 	mathObject arr[input.length()];
-	
-	
+
+
 	// [ P A R S E R ] ==============================
-	//COVERT string INPUT TO mathObject ARRAY 
-	
+	//COVERT string INPUT TO mathObject ARRAY
+
 	// > BRACKET TELEPORT SYSTEM
 	int bracketDepth = 0;
 	int bracketTeleportHandler[20];
-	
+
 	// > INITIALIZE LOOP VARIABLES
-	
+
 	int i = 0, //INDEX being worked on
 		t = 0; //target INDEX of mathObject arr
-		
+
 	// > MAIN LOOP
     while(i < input.length()){
     	char cur = input[i];
@@ -151,39 +151,39 @@ int main(){
     		bracketDepth++;
     		bracketTeleportHandler[bracketDepth] = t;
     		t++; i++;
-    		
+
 		}else if(cur == ')'){
     		arr[t] = mathObject("bracket_close", -1);
     		arr[bracketTeleportHandler[bracketDepth]].setNum(t);
     		bracketDepth--;
     		t++; i++;
-    		
+
 		}else if(cur == '^'){
 			arr[t] = mathObject("power", 6);
     		t++; i++;
-    		
+
 		}else if(cur == '*'){
 			arr[t] = mathObject("multiplication", 4);
     		t++; i++;
-    		
+
 		}else if(cur == '/'){
 			arr[t] = mathObject("division", 3);
     		t++; i++;
-    		
+
 		}else if(cur == '+'){
 			arr[t] = mathObject("addition", 2);
     		t++; i++;
-    		
+
 		}else if(cur == '-'){
 			arr[t] = mathObject("substraction", 1);
     		t++; i++;
-    		
+
 		}else if('0' <= cur && cur <= '9'){
 			double frontTemp = 0; //INFRONT OF COMA
 			double backTemp = 0; // BACK OF COMA
 			double behindComa = 0;
 			while(true){
-				
+
 				if(input[i] == '.'){
 					behindComa = 1;
 				}else if(behindComa > 0){
@@ -194,8 +194,8 @@ int main(){
 					int toInt = input[i] - '0';
 					frontTemp = (frontTemp*10) + toInt;
 				}
-				
-				
+
+
 				char nextInput = input[i+1];
 				if((i+1) < input.length() && (('0' <= nextInput && nextInput <= '9') || nextInput == '.')){
 					i++;
@@ -205,7 +205,7 @@ int main(){
 					break;
 				}
 			}
-			
+
 		}else if('a' <= cur && cur <= 'z'){
 			int startIn = i;
 			while(true){
@@ -221,7 +221,7 @@ int main(){
 					if(str == "sqrt") arr[t] = mathObject("sqrt", 5);
 					if(str == "ln") arr[t] = mathObject("ln", 5);
 					if(str == "torad") arr[t] = mathObject("torad", 5);
-					
+
 					t++; i++;
 					break;
 				}
@@ -231,21 +231,19 @@ int main(){
 			break;
 		}
 	}
-    
+
 	if(bracketDepth != 0){
 		cout << "<!!!> ERROR: UNEVEN BRACKET" << endl;
 		return 0;
 	}
-	
-	/*		
+
+	/*
     cout << endl << "MATH OBJECT ARRAY: " << endl;
     for(int a = 0; a < t; a++){
     	cout << arr[a].getType() << " " << setprecision(11) << arr[a].getNum() << endl;
 	}*/
-	
+
 	cout << endl;
 	cout << "RESULT: " << solveRecursion(arr, 0, t-1) << endl;
     return 0;
 }
-
-
