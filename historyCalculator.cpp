@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-// Link list node
+/* Link list node */
 class Node{
     public:
         string data;
@@ -13,14 +13,15 @@ class Node{
         }
 };
 
+/* Class for functions of History Manager */
 class CalculatorTrial {
-    // Public access classifier
     public:
         void DisplayHistory();
         void DeleteHistory();
-        //void ClearHistory(); ... soon to be added
+        void ClearHistory();
 };
 
+/* Function to append new data into the history list */
 void append(struct Node** head_ref, struct Node **tail_ref, string new_data){
     struct Node* new_node = new Node(new_data);
     if(*head_ref == NULL)
@@ -30,6 +31,7 @@ void append(struct Node** head_ref, struct Node **tail_ref, string new_data){
     *tail_ref = new_node;
 }
 
+/* Removing the elements in history list at specific position k */
 struct Node* deleteNode(struct Node *head, int k) {
 
     // Store the head as tempNode
@@ -76,7 +78,7 @@ struct Node* deleteNode(struct Node *head, int k) {
 
 }
 
-
+/* Function to print the linked list for the history */
 void printList(Node *head){
     while (head != NULL){
 
@@ -92,61 +94,92 @@ void printList(Node *head){
     cout << "\n";
 }
 
+/* Function to display the current history list */
 void DisplayHistory(Node *head){
+
     cout << "Displaying current history of Calculator..." << endl;
-    printList(head);
+
+    // If the list is empty
+    if (head == NULL){
+        cout << "Nothing here." << endl;
+    }
+    // If it is not empty, print the contents
+    else
+        printList(head);
+
 }
 
-void DeleteHistory(Node **head){
+/* Function to delete specific elements in history list*/
+void DeleteHistory(Node **head_ref){
     int position;
     cout << "Enter position to delete: ";
     cin >> position;
 
     cout << "History of Calculator after deletion: " << endl;
-    *head = deleteNode(*head, position);
+    *head_ref = deleteNode(*head_ref, position);
 
-    printList(*head);
+    printList(*head_ref);
 }
 
-/** 
-void ClearHistory(){
-}
-**/
+/* Function to clear the entire history list */
+void ClearHistory(Node** head_ref)
+{
 
-// Main function
+    // Deref head_ref to get the real head
+    Node* currNode = *head_ref;
+    Node* next = NULL;
+
+    while (currNode != NULL)
+    {
+        next = currNode->next; // Storing the address of next node
+        free(currNode);        // Deallocates the memory
+        currNode = next;       // Current Node goes to the next node
+    }
+
+    // Deref head_ref to affect the real head back in the caller
+    *head_ref = NULL;
+
+    cout << "Calculator History is cleared." << endl;
+}
+
+/* Main function */
 int main(){
     int userChoice;
 
+    // Initialize head node and tail node as NULL
     struct Node *head = NULL, *tail = NULL;
 
+    // Try adding some input to the history list
+    // (Will be adjusted later for program implementation)
     append(&head, &tail, "123+456");
     append(&head, &tail, "cos(360)");
     append(&head, &tail, "99xlog(1000)");
 
     cout << "============= Calculator History =============\n";
 
+    // User guide (Option 1-4)
     cout<<"1) Display history list"<<endl;
     cout<<"2) Delete an element from history list"<<endl;
-    //cout<<"3) Clear history list"<<endl; ... soon to be added
-    cout<<"3) Exit"<<endl; // supposed to be 4 but make it 3 first
+    cout<<"3) Clear history list"<<endl;
+    cout<<"4) Exit"<<endl;
 
     do {
-      cout<<"\nEnter your choice : "<<endl;
-      cin>>userChoice;
+        // Prompt
+        cout << "\nEnter your choice : " << endl;
+        cin >> userChoice;
 
-      switch (userChoice) {
-         case 1: DisplayHistory(head);
-         break;
-         case 2: DeleteHistory(&head);
-         break;
-         //case 3: ClearHistory(); ... soon to be added
-         //break;
-         case 3: cout<<"Calculator Program ended."<<endl;
-         break;
-         default: cout<<"Invalid choice"<<endl;
-      }
-   } while(userChoice!=3);
+        switch (userChoice) {
+            case 1: DisplayHistory(head);   // If user enter 1 -> display history
+                break;
+            case 2: DeleteHistory(&head);   // If user enter 2 -> delete history at specific pos
+                break;
+            case 3: ClearHistory(&head);    // If user enter 3 -> clear history
+                break;
+            case 4: cout<<"Calculator History Manager ended."<<endl; // If 4, program terminated
+                break;
+            default: cout<<"Invalid choice"<<endl; // Other input will considered as invalid
+        }
+   } while(userChoice!=4);
 
     return 0;
 }
-
