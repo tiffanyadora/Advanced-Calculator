@@ -1,10 +1,10 @@
 class Operations
 {
 	public:
-		double ToRad(double Degrees); //converts the degree input into radians
-		double Sine(double Degrees); //does sine operations
-		double Cosine(double Degrees); //does cosine operations
-		double Tangent(double Degrees); //does tangent operations
+		double ToRad(double Radians); //converts the degree input into radians
+		double Sine(double Radians); //does sine operations
+		double Cosine(double Radians); //does cosine operations
+		double Tangent(double Radians); //does tangent operations
 		double SquareRoot(double Number); //does square root operations
 		double Exponent(double Number, double Power); //does exponent operations
 		double Logarithm(double Number); //does logarithm operations
@@ -25,27 +25,21 @@ double Operations::ToRad(double Degrees)
 	return radians;
 }
 
-double Operations::Sine(double Degrees)
+double Operations::Sine(double Radians)
 {
-	degree = Degrees;
-	radians = ToRad(degree);
-	ans = sin(radians);
+	ans = sin(Radians);
 	return ans;
 }
 
-double Operations::Cosine(double Degrees)
+double Operations::Cosine(double Radians)
 {
-	degree = Degrees;
-	radians = ToRad(degree);
-	ans = cos(radians);
+	ans = cos(Radians);
 	return ans;
 }
 
-double Operations::Tangent(double Degrees)
+double Operations::Tangent(double Radians)
 {
-	degree = Degrees;
-	radians = ToRad(degree);
-	ans = tan(radians);
+	ans = tan(Radians);
 	return ans;
 }
 
