@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-
+#include "Operations.cpp"
 using namespace std;
 
 class mathObject{
@@ -51,16 +51,57 @@ double solveRecursion(mathObject* arr, int leftIndex, int rightIndex){
 		
 	}
 	
+	//INSTANTIATE MATH OPERATOR OBJECT
+	Operations op;
 	
 	string minPriType = arr[minPriIndex].getType();
 	if(minPriType == "number"){
 		return arr[minPriIndex].getNum();
 	}else if(minPriType == "addition"){
 		return (solveRecursion(arr, leftIndex, minPriIndex-1) + solveRecursion(arr, minPriIndex+1, rightIndex));
+	}else if(minPriType == "substraction"){
+		return (solveRecursion(arr, leftIndex, minPriIndex-1) - solveRecursion(arr, minPriIndex+1, rightIndex));
+	}else if(minPriType == "division"){
+		return (solveRecursion(arr, leftIndex, minPriIndex-1) / solveRecursion(arr, minPriIndex+1, rightIndex));
 	}else if(minPriType == "multiplication"){
 		return (solveRecursion(arr, leftIndex, minPriIndex-1) * solveRecursion(arr, minPriIndex+1, rightIndex));
+	}else if(minPriType == "power"){
+		return op.Exponent(solveRecursion(arr, leftIndex, minPriIndex-1), solveRecursion(arr, minPriIndex+1, rightIndex));
+	}else if(minPriType == "sin"){
+		if(leftIndex != minPriIndex)
+			return (solveRecursion(arr, leftIndex, minPriIndex-1) * op.Sine(solveRecursion(arr, minPriIndex+1, rightIndex)));
+		else
+			return (op.Sine(solveRecursion(arr, minPriIndex+1, rightIndex)));
+	}else if(minPriType == "cos"){
+		if(leftIndex != minPriIndex)
+			return (solveRecursion(arr, leftIndex, minPriIndex-1) * op.Cosine(solveRecursion(arr, minPriIndex+1, rightIndex)));
+		else
+			return (op.Sine(solveRecursion(arr, minPriIndex+1, rightIndex)));
+	}else if(minPriType == "tan"){
+		if(leftIndex != minPriIndex)
+			return (solveRecursion(arr, leftIndex, minPriIndex-1) * op.Tangent(solveRecursion(arr, minPriIndex+1, rightIndex)));
+		else
+			return (op.Sine(solveRecursion(arr, minPriIndex+1, rightIndex)));
+	}else if(minPriType == "log"){
+		if(leftIndex != minPriIndex)
+			return (solveRecursion(arr, leftIndex, minPriIndex-1) * op.Logarithm(solveRecursion(arr, minPriIndex+1, rightIndex)));
+		else
+			return (op.Sine(solveRecursion(arr, minPriIndex+1, rightIndex)));
+	}else if(minPriType == "ln"){
+		if(leftIndex != minPriIndex)
+			return (solveRecursion(arr, leftIndex, minPriIndex-1) * op.NaturalLog(solveRecursion(arr, minPriIndex+1, rightIndex)));
+		else
+			return (op.Sine(solveRecursion(arr, minPriIndex+1, rightIndex)));
+	}else if(minPriType == "torad"){
+		if(leftIndex != minPriIndex)
+			return (solveRecursion(arr, leftIndex, minPriIndex-1) * op.ToRad(solveRecursion(arr, minPriIndex+1, rightIndex)));
+		else
+			return (op.Sine(solveRecursion(arr, minPriIndex+1, rightIndex)));
 	}else if(minPriType == "bracket_open"){
-		return solveRecursion(arr, leftIndex+1, rightIndex-1);
+		if(leftIndex != minPriIndex)
+			return (solveRecursion(arr, leftIndex, minPriIndex-1) * solveRecursion(arr, minPriIndex+1, rightIndex-1));
+		else
+			return solveRecursion(arr, leftIndex+1, rightIndex-1);
 	}
 }
 
@@ -83,7 +124,8 @@ int main(){
 		input[i] = tolower(input[i]);
 	}
 	
-	cout << "clean input: " << input << endl;
+	/*
+	cout << "clean input: " << input << endl;*/
 	
 	//INITIALIZE mathObject ARRAY
 	mathObject arr[input.length()];
@@ -117,7 +159,7 @@ int main(){
     		t++; i++;
     		
 		}else if(cur == '^'){
-			arr[t] = mathObject("power", 5);
+			arr[t] = mathObject("power", 6);
     		t++; i++;
     		
 		}else if(cur == '*'){
@@ -172,12 +214,13 @@ int main(){
 					i++;
 				}else{
 					string str = input.substr(startIn, i-startIn+1);
-					if(str == "sin") arr[t] = mathObject("sin", 6);
-					if(str == "cos") arr[t] = mathObject("cos", 6);
-					if(str == "tan") arr[t] = mathObject("tan", 6);
-					if(str == "log") arr[t] = mathObject("log", 6);
-					if(str == "sqrt") arr[t] = mathObject("sqrt", 6);
-					if(str == "ln") arr[t] = mathObject("ln", 6);
+					if(str == "sin") arr[t] = mathObject("sin", 5);
+					if(str == "cos") arr[t] = mathObject("cos", 5);
+					if(str == "tan") arr[t] = mathObject("tan", 5);
+					if(str == "log") arr[t] = mathObject("log", 5);
+					if(str == "sqrt") arr[t] = mathObject("sqrt", 5);
+					if(str == "ln") arr[t] = mathObject("ln", 5);
+					if(str == "torad") arr[t] = mathObject("torad", 5);
 					
 					t++; i++;
 					break;
@@ -193,13 +236,16 @@ int main(){
 		cout << "<!!!> ERROR: UNEVEN BRACKET" << endl;
 		return 0;
 	}
-			
+	
+	/*		
     cout << endl << "MATH OBJECT ARRAY: " << endl;
     for(int a = 0; a < t; a++){
     	cout << arr[a].getType() << " " << setprecision(11) << arr[a].getNum() << endl;
-	}
+	}*/
 	
 	cout << endl;
 	cout << "RESULT: " << solveRecursion(arr, 0, t-1) << endl;
     return 0;
 }
+
+
