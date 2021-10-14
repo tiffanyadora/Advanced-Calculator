@@ -1,4 +1,5 @@
 #include <iostream>
+#include "main.cpp"
 using namespace std;
 
 /* Link list node */
@@ -112,7 +113,6 @@ void DisplayHistory(Node *head){
 /* Function to delete specific elements in history list*/
 void DeleteHistory(Node **head_ref){
     int position;
-	
     // Prompt
     cout << "Enter position to delete: ";
     cin >> position;
@@ -121,7 +121,7 @@ void DeleteHistory(Node **head_ref){
     *head_ref = deleteNode(*head_ref, position);
 
     cout << "History of Calculator after deletion: " << endl;
-    printList(*head_ref); // Print the update
+    printList(*head_ref); // Print the updated list
 }
 
 /* Function to clear the entire history list */
@@ -151,14 +151,46 @@ int main(){
 
     // Initialize head node and tail node as NULL
     struct Node *head = NULL, *tail = NULL;
+	
+    cout << "Welcome to our Calculator!\n";
+	cout << "=========================\n";
+	cout << "Type \\end to end calculation & review history\n";
+	cout << "Type \\help to see available operation\n";
+	cout << "Let's start calculating, please try: \n";
+	cout << "(12 + 3^2) * 2 - 50sin(torad(30))\n" << endl;
+			
+	string inputTemp;
+	while(true){
+		cout << "> ";
+		getline(cin, inputTemp);
+		
+		if(inputTemp == "\\end") break;
+		if(inputTemp == "\\help"){
+			cout << "HELP ==================\n";
+			cout << "- we handle next-to multiplication (ex: 23sin(30) == 23*sin(30))\n";
+			cout << "- we handle capital & spaces between operands (ex: SiN20 +sIn(20) is allowed)\n";
+			cout << "- basic operation ( * / + - ^ )\n";
+			cout << "- brackets ()\n";
+			cout << "- trigonometry (sin cos tan) in radians!\n";
+			cout << "- torad (convert degree to radians)\n";
+			cout << "- log and ln\n";
+			cout << "- sqrt (square root)\n"<<endl;
+			cout << "Developed by Bintang, Rizka, and Tiffany\nData Structures & Algorithms, 2021\n" << endl;
+			
+			continue;
+		};
+		if(inputTemp == "") break;
+		
+		ostringstream os;
+		
+		os << calculatorMachine(inputTemp);
+		string res = os.str();
+		
+		append(&head,&tail,inputTemp + " = " + res);
+		cout << "= " << res << endl << endl;
+	}
 
-    // Try adding some input to the history list
-    // (Will be adjusted later for program implementation)
-    append(&head, &tail, "123+456");
-    append(&head, &tail, "cos(360)");
-    append(&head, &tail, "99xlog(1000)");
-
-    cout << "============= Calculator History =============\n";
+    cout << "\n============= Calculator History =============\n";
 
     // User guide (Option 1-4)
     cout<<"1) Display history list"<<endl;
@@ -166,7 +198,7 @@ int main(){
     cout<<"3) Clear history list"<<endl;
     cout<<"4) Exit"<<endl;
 
-    // > Main Loop
+    // > Main Loop for history manager
     do {
         // Prompt
         cout << "\nEnter your choice : " << endl;
