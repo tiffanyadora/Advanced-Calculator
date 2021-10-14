@@ -1,5 +1,5 @@
 #include <iostream>
-#include "main.cpp"
+#include "calculatorMachine.cpp"
 using namespace std;
 
 /* Link list node */
@@ -113,15 +113,13 @@ void DisplayHistory(Node *head){
 /* Function to delete specific elements in history list*/
 void DeleteHistory(Node **head_ref){
     int position;
-    // Prompt
     cout << "Enter position to delete: ";
     cin >> position;
 
-    // Update the list after node removal
+    cout << "History of Calculator after deletion: " << endl;
     *head_ref = deleteNode(*head_ref, position);
 
-    cout << "History of Calculator after deletion: " << endl;
-    printList(*head_ref); // Print the updated list
+    printList(*head_ref);
 }
 
 /* Function to clear the entire history list */
@@ -198,7 +196,6 @@ int main(){
     cout<<"3) Clear history list"<<endl;
     cout<<"4) Exit"<<endl;
 
-    // > Main Loop for history manager
     do {
         // Prompt
         cout << "\nEnter your choice : " << endl;
