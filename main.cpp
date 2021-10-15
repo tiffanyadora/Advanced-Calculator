@@ -23,7 +23,7 @@ class CalculatorTrial {
 };
 
 /* Function to append new data into the history list */
-void append(struct Node** head_ref, struct Node **tail_ref, string new_data){
+void appendNode(struct Node** head_ref, struct Node **tail_ref, string new_data){
     struct Node* new_node = new Node(new_data);
     if(*head_ref == NULL)
         *head_ref = new_node;
@@ -149,42 +149,42 @@ int main(){
 
     // Initialize head node and tail node as NULL
     struct Node *head = NULL, *tail = NULL;
-	
+
     cout << "Welcome to our Calculator!\n";
 	cout << "=========================\n";
 	cout << "Type \\end to end calculation & review history\n";
 	cout << "Type \\help to see available operation\n";
 	cout << "Let's start calculating, please try: \n";
 	cout << "(12 + 3^2) * 2 - 50sin(torad(30))\n" << endl;
-			
+
 	string inputTemp;
 	while(true){
 		cout << "> ";
 		getline(cin, inputTemp);
-		
+
 		if(inputTemp == "\\end") break;
 		if(inputTemp == "\\help"){
 			cout << "HELP ==================\n";
-			cout << "- we handle next-to multiplication (ex: 23sin(30) == 23*sin(30))\n";
-			cout << "- we handle capital & spaces between operands (ex: SiN20 +sIn(20) is allowed)\n";
-			cout << "- basic operation ( * / + - ^ )\n";
-			cout << "- brackets ()\n";
-			cout << "- trigonometry (sin cos tan) in radians!\n";
-			cout << "- torad (convert degree to radians)\n";
-			cout << "- log and ln\n";
-			cout << "- sqrt (square root)\n"<<endl;
+			cout << "- We handle next-to multiplication (ex: 23sin(30) == 23*sin(30))\n";
+			cout << "- We handle capital & spaces between operands (ex: SiN20 +sIn(20) is allowed)\n";
+			cout << "- Basic operation ( * / + - ^ )\n";
+			cout << "- Brackets ()\n";
+			cout << "- Trigonometry (sin cos tan) in radians!\n";
+			cout << "- Torad (convert degree to radians)\n";
+			cout << "- Log and ln\n";
+			cout << "- Sqrt (square root)\n"<<endl;
 			cout << "Developed by Bintang, Rizka, and Tiffany\nData Structures & Algorithms, 2021\n" << endl;
-			
+
 			continue;
 		};
 		if(inputTemp == "") break;
-		
+
 		ostringstream os;
-		
+
 		os << calculatorMachine(inputTemp);
 		string res = os.str();
-		
-		append(&head,&tail,inputTemp + " = " + res);
+
+		appendNode(&head,&tail,inputTemp + " = " + res); // Appending data into the history list
 		cout << "= " << res << endl << endl;
 	}
 
