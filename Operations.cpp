@@ -1,14 +1,16 @@
+#include <cmath>
+
 class Operations
 {
 	public:
-		double ToRad(double Degrees); //converts the degree input into radians
-		double Sine(double Radians); //does sine operations
-		double Cosine(double Radians); //does cosine operations
-		double Tangent(double Radians); //does tangent operations
-		double SquareRoot(double Number); //does square root operations
-		double Exponent(double Number, double Power); //does exponent operations
-		double Logarithm(double Number); //does logarithm operations
-		double NaturalLog(double Number); //does natural logarithm operations
+		double ToRad(double Degrees); //function that converts the degree input into radians
+		double Sine(double Radians); //function that does sine operations
+		double Cosine(double Radians); //function that does cosine operations
+		double Tangent(double Radians); //function that does tangent operations
+		double SquareRoot(double Number); //function that does square root operations
+		double Exponent(double Number, double Power); //function that does exponent operations
+		double Logarithm(double Number); //fucntion that does logarithm operations
+		double NaturalLog(double Number); //function that does natural logarithm operations
 		
 	private:
 		double degree;
